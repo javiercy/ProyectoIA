@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Survey {% endblock %}
+
+{% block content %}
+
+<h1>Contestar Encuesta</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form}}
+    <button class="btn btn-primary mb-3">
+        Publicar
+    </button>
+</form>
+
+{% endblock %}

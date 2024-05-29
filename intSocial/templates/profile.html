@@ -35,71 +35,29 @@
             <p>{{ profile.bio }} </p> 
         </div>
     </div>
-</div>
-<hr>
-<div class="timeline-container">
-    {% for post in posts %}
-    <article class="post-card">
-      <div class="like-dislike-section">
-        <div class="likes">
-          {{ post.cantidad_likes }}
-          {% user_has_liked post.id '1' as has_liked %}
-          {% if has_liked %}
-            <form method="post" action="{% url 'quitar_like' post.id %}">
-              {% csrf_token %}
-              <input type="submit" class="like-btn liked" value="👍 Quitar Like">
-            </form>
-          {% else %}
-            <form method="post" action="{% url 'incrementar_like' post.id %}">
-              {% csrf_token %}
-              <input type="submit" class="like-btn" value="👍 Dar Like">
-            </form>
-          {% endif %}
-        </div>
-        <div class="dislikes">
-          {% user_has_liked post.id '2' as has_disliked %}
-          {% if has_disliked %}
-            <form method="post" action="{% url 'quitar_dislike' post.id %}">
-              {% csrf_token %}
-              <input type="submit" class="dislike-btn disliked" value="👎 Quitar Dislike">
-            </form>
-          {% else %}
-            <form method="post" action="{% url 'incrementar_dislike' post.id %}">
-              {% csrf_token %}
-              <input type="submit" class="dislike-btn" value="👎 Dar Dislike">
-            </form>
-          {% endif %}
-          {{ post.cantidad_dislikes }}
-        </div>
-      </div>
-      <div class="post-content">
-        <h3 style="color: #333;">{{ post.autor.username }}</h3>
-        <h5 style="color: #555; cursor: default;">{{ post.titulo }}</h5>
-        <p>
-          <a href="{% url 'post_details' id_post=post.id %}">
-              {{ post.contenido }}
-          </a>
-      </p>
-        <ul class="image-list">
-          {% for relacion in relaciones %}
-            {% if relacion.post == post %}
-              {% for imagen in imagenes %}
-                {% if relacion.imagen == imagen %}
-                  <li>
-                    <a href="{{ imagen.src }}"><img src="{{ imagen.src }}" alt="{{ imagen.titulo }}" class="thumbnail"></a>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-        </ul>
-        <div class="metadata">
-          <div class="created-at">{{ post.creado_en }}</div>
-          <div class="category">{{ post.categoria }}</div>
-        </div>
-      </div>
-    </article>
-  {% endfor %}
-</div>
 
+    {% if encuesta %}
+    <div class="row encuesta-data">
+        <h2>Datos de la Encuesta</h2>
+        <p>Edad: {{ encuesta.edad }}</p>
+        <p>Sexo: {{ encuesta.sexo }}</p>
+        <p>Género Preferido: {{ encuesta.genero_preferido }}</p>
+        <p>Ocupación: {{ encuesta.ocupacion }}</p>
+        <p>Personalidad: {{ encuesta.personalidad }}</p>
+        <p>Paz Interior: {{ encuesta.paz_interior }}</p>
+        <p>Sueño: {{ encuesta.sueño }}</p>
+        <p>Tiempo de Juego: {{ encuesta.tiempo_de_juego }}</p>
+        <p>Horario: {{ encuesta.horario }}</p>
+        <p>Días de Juego: {{ encuesta.dias_de_juego }}</p>
+        <p>Escuchas Música Mientras Juegas: {{ encuesta.escuchas_musica_mientras_juegas }}</p>
+        <p>Enfoque de Juego: {{ encuesta.enfoque_de_juego }}</p>
+        <p>Plataforma Preferida: {{ encuesta.plataforma_preferida }}</p>
+        <p>Comunicación: {{ encuesta.comunicacion }}</p>
+        <p>Modalidad de Juego: {{ encuesta.modalidad_de_juego }}</p>
+    </div>
+    {% else %}
+    <p>No hay datos de encuesta disponibles.</p>
+    {% endif %}
+
+</div>
 {% endblock %}

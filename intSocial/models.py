@@ -155,3 +155,26 @@ class Grupos(models.Model):
 
     def __str__(self):
         return self.titulo
+
+class Encuesta(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    edad = models.IntegerField()
+    sexo = models.CharField(max_length=20)
+    genero_preferido = models.CharField(max_length=50)
+    ocupacion = models.CharField(max_length=20)
+    personalidad = models.CharField(max_length=20)
+    paz_interior = models.CharField(max_length=20)
+    sueño = models.CharField(max_length=50)
+    tiempo_de_juego = models.CharField(max_length=20)
+    horario = models.CharField(max_length=20)
+    dias_de_juego = models.CharField(max_length=20)
+    escuchas_musica_mientras_juegas = models.CharField(max_length=10)
+    enfoque_de_juego = models.CharField(max_length=20)
+    plataforma_preferida = models.CharField(max_length=20)
+    comunicacion = models.CharField(max_length=20)
+    modalidad_de_juego = models.CharField(max_length=20)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Encuesta de {self.user.username}" if self.user else "Encuesta anónima"

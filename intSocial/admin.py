@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Usuario, Grupos, Imagen, Portafolio, Post, PostImagen, Profile, Level, Likes, Comentario, Notificaciones
+from .models import Usuario, Grupos, Imagen, Portafolio, Post, PostImagen, Profile, Level, Likes, Comentario, Notificaciones, Encuesta
 
 # Register your models here.
 admin.site.register(Usuario)
@@ -13,3 +13,4 @@ admin.site.register(Level)
 admin.site.register(Likes)
 admin.site.register(Comentario)
 admin.site.register(Notificaciones)
+admin.site.register(Encuesta)

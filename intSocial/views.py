@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Usuario, Post, Comentario, Imagen, PostImagen, Profile, Likes, Notificaciones
-from .forms import CreateNewPost, CrearNuevoUsuario, CreateNewComment, UpdateUserForm
+from .models import Usuario, Post, Comentario, Imagen, PostImagen, Profile, Likes, Notificaciones, Encuesta
+from .forms import CreateNewPost,CrearNuevoUsuario, CreateNewComment, UpdateUserForm, CreateNewSurvey
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -228,6 +228,8 @@ def profile(request, username=None):
     for imagen in all_images:
         imagen.src = imagen.src.url
 
+    encuesta = Encuesta.objects.filter(user=user).first()
+
     return render(request, 'profile.html', {
         'profile': perfil,
         'user': user,
@@ -235,6 +237,7 @@ def profile(request, username=None):
         'imagenes': all_images,
         'relaciones': relaciones,
         'non_read_notis':non_read_notis,
+        'encuesta': encuesta,
     })
 
 def test(request):
@@ -391,3 +394,35 @@ def quitar_like_dislike(request, post_id, tipo):
     """
     publicacion = get_object_or_404(Post, pk=post_id)
     Likes.objects.filter(usuario=request.user, ref=publicacion, valor=tipo).delete()
+
+@login_required
+def create_survey(request):
+    if request.method == 'POST':
+        form = CreateNewSurvey(request.POST)
+        if form.is_valid():
+            encuesta = Encuesta(
+                edad=form.cleaned_data['edad'],
+                sexo=form.cleaned_data['sexo'],
+                genero_preferido=form.cleaned_data['genero_preferido'],
+                ocupacion=form.cleaned_data['ocupacion'],
+                personalidad=form.cleaned_data['personalidad'],
+                paz_interior=form.cleaned_data['paz_interior'],
+                sueño=form.cleaned_data['sueño'],
+                tiempo_de_juego=form.cleaned_data['tiempo_de_juego'],
+                horario=form.cleaned_data['horario'],
+                dias_de_juego=form.cleaned_data['dias_de_juego'],
+                escuchas_musica_mientras_juegas=form.cleaned_data['escuchas_musica_mientras_juegas'],
+                enfoque_de_juego=form.cleaned_data['enfoque_de_juego'],
+                plataforma_preferida=form.cleaned_data['plataforma_preferida'],
+                comunicacion=form.cleaned_data['comunicacion'],
+                modalidad_de_juego=form.cleaned_data['modalidad_de_juego'],
+                user=request.user if request.user.is_authenticated else None
+            )
+            encuesta.save()
+            return redirect('timeline')  # Reemplaza 'some-view-name' con el nombre de la vista a la que deseas redirigir
+    else:
+        form = CreateNewSurvey()
+    return render(request, 'survey.html', {'form': form})
+
+
+    
