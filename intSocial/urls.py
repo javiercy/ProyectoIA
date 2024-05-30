@@ -21,5 +21,8 @@ urlpatterns = [
     path('quitar_like/<int:post_id>/', views.quitar_like, name='quitar_like'), #quita el like a un post
     path('incrementar_dislike/<int:post_id>/', views.incrementar_dislike, name='incrementar_dislike'), #da dislike a un post
     path('quitar_dislike/<int:post_id>/', views.quitar_dislike, name='quitar_dislike'), #quita el dislike a post
-    path('createsurvey/', views.create_survey, name='survey')
+    path('createsurvey/', views.create_survey, name='survey'),
+    path('match/', views.match    , name='match'),
+    path('encuesta/', views.encuesta_view, name='encuesta'),
+    path('matchresult/', views.tu_vista, name='matchresult'),
 ]

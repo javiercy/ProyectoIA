@@ -178,3 +178,34 @@ class Encuesta(models.Model):
 
     def __str__(self):
         return f"Encuesta de {self.user.username}" if self.user else "Encuesta anónima"
+
+class Encuesta_peso(models.Model):
+        user = models.ForeignKey(User, on_delete=models.CASCADE)
+        edad_peso = models.FloatField(default=0)  # Campo para almacenar el peso de la edad
+        sexo_peso = models.FloatField(default=0)  # Campo para almacenar el peso del sexo
+        genero_preferido_peso = models.FloatField(default=0)  # Campo para almacenar el peso del género preferido
+        ocupacion_peso = models.FloatField(default=0)  # Campo para almacenar el peso de la ocupación
+        personalidad_peso = models.FloatField(default=0)  # Campo para almacenar el peso de la personalidad
+        paz_interior_peso = models.FloatField(default=0)  # Campo para almacenar el peso de la paz interior
+        sueño_peso = models.FloatField(default=0)  # Campo para almacenar el peso de los hábitos de sueño
+        tiempo_de_juego_peso = models.FloatField(default=0)  # Campo para almacenar el peso del tiempo de juego
+        horario_peso = models.FloatField(default=0)  # Campo para almacenar el peso del horario de juego
+        dias_de_juego_peso = models.FloatField(default=0)  # Campo para almacenar el peso de los días de juego
+        escuchas_musica_mientras_juegas_peso = models.FloatField(default=0)  # Campo para almacenar el peso de escuchar música mientras juegas
+        enfoque_de_juego_peso = models.FloatField(default=0)  # Campo para almacenar el peso del enfoque de juego
+        plataforma_preferida_peso = models.FloatField(default=0)  # Campo para almacenar el peso de la plataforma preferida
+        comunicacion_peso = models.FloatField(default=0)  # Campo para almacenar el peso de la comunicación
+        modalidad_de_juego_peso = models.FloatField(default=0)  # Campo para almacenar el peso de la modalidad de juego
+        total_pesos = models.FloatField(default=0)  # Campo para almacenar la suma total de los pesos
+        creado_en = models.DateTimeField(auto_now_add=True)
+
+        def __str__(self):
+            return f"Encuesta de {self.user.username}" if self.user else "Encuesta anónima"
+
+class Match(models.Model):
+        usuario1 = models.ForeignKey(User, related_name='match_usuario1', on_delete=models.CASCADE)
+        usuario2 = models.ForeignKey(User, related_name='match_usuario2', on_delete=models.CASCADE)
+        fecha_match = models.DateTimeField(auto_now_add=True)
+
+        def __str__(self):
+            return f'Match entre {self.usuario1.username} y {self.usuario2.username}'

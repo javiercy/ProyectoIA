@@ -35,16 +35,13 @@
                     <a class="nav-link" href="{% url 'index' %}"><img class="nav-logo"src="{% static 'styles/images/house.svg' %}"alt="Home">Home</a>
                 </li>
                 {% if user.is_authenticated %}
+            
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'timeline' %}"><img class="nav-logo"src="{% static 'styles/images/calendar-range.svg' %}"alt="Timeline">Matchs</a>
+                    <a class="nav-link" href="{% url 'matchresult' %}"><img class="nav-logo"src="{% static 'styles/images/calendar-range.svg' %}"alt="Timeline">Match</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'survey' %}"><img class="nav-logo"src="{% static 'styles/images/plus-circle.svg' %}"alt="NewPost">Survey</a>
+                    <a class="nav-link" href="{% url 'encuesta' %}"><img class="nav-logo"src="{% static 'styles/images/plus-circle.svg' %}"alt="NewPost">Encuesta</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'notifications' %}"><img class="nav-logo"src="{% static 'styles/images/bell.svg' %}" alt="Notifications">Notifications {{non_read_notis}} </a>
-                </li>
-                
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'profile' username=request.user.username %}"><img class="nav-logo"src="{% static 'styles/images/person-circle.svg' %}" alt="Profile">Profile</a>
                 </li>

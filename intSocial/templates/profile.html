@@ -35,29 +35,5 @@
             <p>{{ profile.bio }} </p> 
         </div>
     </div>
-
-    {% if encuesta %}
-    <div class="row encuesta-data">
-        <h2>Datos de la Encuesta</h2>
-        <p>Edad: {{ encuesta.edad }}</p>
-        <p>Sexo: {{ encuesta.sexo }}</p>
-        <p>Género Preferido: {{ encuesta.genero_preferido }}</p>
-        <p>Ocupación: {{ encuesta.ocupacion }}</p>
-        <p>Personalidad: {{ encuesta.personalidad }}</p>
-        <p>Paz Interior: {{ encuesta.paz_interior }}</p>
-        <p>Sueño: {{ encuesta.sueño }}</p>
-        <p>Tiempo de Juego: {{ encuesta.tiempo_de_juego }}</p>
-        <p>Horario: {{ encuesta.horario }}</p>
-        <p>Días de Juego: {{ encuesta.dias_de_juego }}</p>
-        <p>Escuchas Música Mientras Juegas: {{ encuesta.escuchas_musica_mientras_juegas }}</p>
-        <p>Enfoque de Juego: {{ encuesta.enfoque_de_juego }}</p>
-        <p>Plataforma Preferida: {{ encuesta.plataforma_preferida }}</p>
-        <p>Comunicación: {{ encuesta.comunicacion }}</p>
-        <p>Modalidad de Juego: {{ encuesta.modalidad_de_juego }}</p>
-    </div>
-    {% else %}
-    <p>No hay datos de encuesta disponibles.</p>
-    {% endif %}
-
 </div>
 {% endblock %}

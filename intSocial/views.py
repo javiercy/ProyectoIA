@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Usuario, Post, Comentario, Imagen, PostImagen, Profile, Likes, Notificaciones, Encuesta
-from .forms import CreateNewPost,CrearNuevoUsuario, CreateNewComment, UpdateUserForm, CreateNewSurvey
+from .models import Usuario, Post, Comentario, Imagen, PostImagen, Profile, Likes, Notificaciones, Encuesta, Encuesta_peso, Match
+from .forms import CreateNewPost,CrearNuevoUsuario, CreateNewComment, UpdateUserForm, CreateNewSurvey, CreateNewForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -82,7 +82,7 @@ def signin(request):
             })
         else:
             login(request, user)
-            return redirect('timeline')
+            return redirect('/')
 
 def signout(request):
     """
@@ -419,10 +419,118 @@ def create_survey(request):
                 user=request.user if request.user.is_authenticated else None
             )
             encuesta.save()
-            return redirect('timeline')  # Reemplaza 'some-view-name' con el nombre de la vista a la que deseas redirigir
+            return redirect('matchresult')  # Reemplaza 'some-view-name' con el nombre de la vista a la que deseas redirigir
     else:
         form = CreateNewSurvey()
     return render(request, 'survey.html', {'form': form})
 
 
+def match(request):
+
+    title = 'Match'
+    return render(request, "match.html", {
+        'title': title
+    })
+
+
+@login_required
+def encuesta_view(request):
+    if request.method == 'POST':
+        form = CreateNewForm(request.POST)
+        if form.is_valid():
+            form.save(user=request.user)
+            return redirect('matchresult')  # Redirige a una página de éxito o donde desees
+    else:
+        form = CreateNewForm()
+    return render(request, 'encuesta.html', {'form': form})
+
+
+def almacenar_match(usuario1, usuario2):
+    # Verificar si el match ya existe para evitar duplicados
+    if not Match.objects.filter(usuario1=usuario1, usuario2=usuario2).exists():
+        nuevo_match = Match(usuario1=usuario1, usuario2=usuario2)
+        nuevo_match.save()
+
+def encontrar_match(user):
+    try:
+        encuesta_usuario_actual = Encuesta_peso.objects.get(user=user)
+    except Encuesta_peso.DoesNotExist:
+        return None
+
+    usuario_con_mas_coincidencias = None
+    max_coincidencias = 0
     
+    for usuario in User.objects.exclude(username=user.username):
+        try:
+            encuesta_usuario = Encuesta_peso.objects.get(user=usuario)
+        except Encuesta_peso.DoesNotExist:
+            continue
+        
+        coincidencias = 0
+        
+        if encuesta_usuario_actual.total_pesos == encuesta_usuario.total_pesos:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.edad_peso == encuesta_usuario.edad_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.sexo_peso == encuesta_usuario.sexo_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.genero_preferido_peso == encuesta_usuario.genero_preferido_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.ocupacion_peso == encuesta_usuario.ocupacion_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.personalidad_peso == encuesta_usuario.personalidad_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.paz_interior_peso == encuesta_usuario.paz_interior_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.sueño_peso == encuesta_usuario.sueño_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.tiempo_de_juego_peso == encuesta_usuario.tiempo_de_juego_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.horario_peso == encuesta_usuario.horario_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.dias_de_juego_peso == encuesta_usuario.dias_de_juego_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.escuchas_musica_mientras_juegas_peso == encuesta_usuario.escuchas_musica_mientras_juegas_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.enfoque_de_juego_peso == encuesta_usuario.enfoque_de_juego_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.plataforma_preferida_peso == encuesta_usuario.plataforma_preferida_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.comunicacion_peso == encuesta_usuario.comunicacion_peso:
+            coincidencias += 1
+        
+        if encuesta_usuario_actual.modalidad_de_juego_peso == encuesta_usuario.modalidad_de_juego_peso:
+            coincidencias += 1
+        
+        
+        if coincidencias > max_coincidencias:
+            max_coincidencias = coincidencias
+            usuario_con_mas_coincidencias = usuario
+    
+    if usuario_con_mas_coincidencias:
+        almacenar_match(user, usuario_con_mas_coincidencias)
+    
+    return usuario_con_mas_coincidencias
+
+def tu_vista(request):
+    usuario_actual = request.user
+    match = encontrar_match(usuario_actual)
+    
+    # Obtener los datos del perfil del usuario con el que se hace match
+    perfil_match = User.objects.get(username=match.username)  # Suponiendo que el username sea único
+    
+    return render(request, 'matches.html', {'match': match, 'perfil_match': perfil_match})

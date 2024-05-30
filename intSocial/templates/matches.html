@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Match Result {% endblock %}
+
+{% block content %}
+{% if match %}
+    <p>Felicidades, has encontrado un match con {{ perfil_match.username }}!</p>
+    <p>"Datos de Contacto.... Proximamente"</p>
+    <p>¡Ahora puedes ponerte en contacto y conocerse mejor!</p>
+{% else %}
+    <p>No se encontraron coincidencias en este momento. ¡Sigue intentando!</p>
+{% endif %}
+{% endblock %}

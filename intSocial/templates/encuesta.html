@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Encuesta {% endblock %}
+
+{% block content %}
+
+<h1>Contestar Encuesta</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar</button>
+</form>
+
+{% endblock %}
